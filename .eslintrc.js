@@ -1,17 +1,19 @@
+const packageJson = require("./package.json");
+const devDependencies = Object.keys(packageJson.devDependencies || {});
+
 module.exports = {
   env: {
-    browser: true,
+    commonjs: true,
     es2021: true,
     node: true,
     jest: true,
-    jquery: true,
   },
   extends: [
     "eslint:recommended",
-    "plugin:compat/recommended",
     "plugin:jest/recommended",
     "prettier",
     "prettier/prettier",
+    "plugin:node/recommended",
   ],
   parser: "@babel/eslint-parser",
   parserOptions: {
@@ -19,13 +21,17 @@ module.exports = {
     sourceType: "module",
     requireConfigFile: "false",
   },
-  plugins: ["@html-eslint", "jest"],
-  overrides: [
-    {
-      files: ["*.html"],
-      parser: "@html-eslint/parser",
-      extends: ["plugin:@html-eslint/recommended"],
-    },
-  ],
-  rules: {},
+  plugins: ["jest"],
+  rules: {
+    "prefer-destructuring": "off",
+    "object-shorthand": "off",
+    "arrow-body-style": "off",
+    "no-underscore-dangle": "off",
+    "node/no-unpublished-require": [
+      "error",
+      {
+        allowModules: devDependencies,
+      },
+    ],
+  },
 };
